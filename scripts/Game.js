@@ -4,7 +4,7 @@ import Platform from "./Entities/Platform.js";
 export default class Game {
   #app;
   #hero;
-  #platform;
+  #platforms = [];
   constructor(app) {
     this.#app = app;
 
@@ -13,18 +13,31 @@ export default class Game {
     this.#hero.y = 200;
     this.#app.stage.addChild(this.#hero);
 
-    this.#platform = new Platform();
-    this.#platform.x = 100;
-    this.#platform.y = 400;
-    this.#app.stage.addChild(this.#platform);
+    const platform1 = new Platform();
+    platform1.x = 100;
+    platform1.y = 400;
+    this.#app.stage.addChild(platform1);
+
+    const platform2 = new Platform();
+    platform2.x = 500;
+    platform2.y = 500;
+    this.#app.stage.addChild(platform2);
+
+    this.#platforms.push(platform1);
+    this.#platforms.push(platform2);
   }
 
   update() {
-    const y = this.#hero.y;
+    const prevPoint = {
+      x: this.#hero.x,
+      y: this.#hero.y,
+    };
     this.#hero.update();
 
-    if (this.isCheckedCollision(this.#hero, this.#platform)) {
-      this.#hero.y = y;
+    for (let i = 0; i < this.#platforms.length; i++) {
+      if (this.isCheckedCollision(this.#hero, this.#platforms[i])) {
+        this.#hero.y = prevPoint.y;
+      }
     }
   }
 
