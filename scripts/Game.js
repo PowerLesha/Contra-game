@@ -23,8 +23,14 @@ export default class Game {
     platform2.y = 500;
     this.#app.stage.addChild(platform2);
 
+    const platform3 = new Platform();
+    platform3.x = 850;
+    platform3.y = 450;
+    this.#app.stage.addChild(platform3);
+
     this.#platforms.push(platform1);
     this.#platforms.push(platform2);
+    this.#platforms.push(platform3);
   }
 
   update() {
@@ -35,9 +41,17 @@ export default class Game {
     this.#hero.update();
 
     for (let i = 0; i < this.#platforms.length; i++) {
-      if (this.isCheckedCollision(this.#hero, this.#platforms[i])) {
-        this.#hero.y = prevPoint.y;
+      if (!this.isCheckedCollision(this.#hero, this.#platforms[i])) {
+        continue;
       }
+      let currentY = this.#hero.y;
+      this.#hero.y = prevPoint.y;
+      if (!this.isCheckedCollision(this.#hero, this.#platforms[i])) {
+        this.#hero.stay();
+        continue;
+      }
+      this.#hero.y = currentY;
+      this.#hero.x = prevPoint.x;
     }
   }
 
