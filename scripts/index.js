@@ -11,6 +11,10 @@ const game = new Game(app);
 app.ticker.add(game.update, game);
 document.body.appendChild(app.view);
 
-document.addEventListener("keydown", (key) => game.onKeyDown(key));
+document.addEventListener("keydown", function (key) {
+  game.keyboardProcessor.onKeyDown(key);
+});
 
-document.addEventListener("keyup", (key) => game.onKeyUp(key));
+document.addEventListener("keyup", function (key) {
+  game.keyboardProcessor.onKeyUp(key);
+});
