@@ -9,8 +9,8 @@ export default class Game {
     this.#app = app;
 
     this.#hero = new Hero();
-    this.#hero.x = 200;
-    this.#hero.y = 200;
+    this.#hero.x = 100;
+    this.#hero.y = 100;
     this.#app.stage.addChild(this.#hero);
 
     const platform1 = new Platform();
@@ -62,5 +62,40 @@ export default class Game {
       entity.y < area.y + area.height &&
       entity.y + entity.height > area.y
     );
+  }
+
+  onKeyDown(key) {
+    const LEFT = 37;
+    const RIGHT = 39;
+    const UP = 38;
+    const DOWN = 40;
+    const A = 65;
+    const S = 83;
+
+    if (key.keyCode == LEFT) {
+      this.#hero.startLeftMove();
+    }
+    if (key.keyCode == RIGHT) {
+      this.#hero.startRightMove();
+    }
+    if (key.keyCode == UP) {
+      this.#hero.startUpMove();
+    }
+  }
+
+  onKeyUp(key) {
+    const LEFT = 37;
+    const RIGHT = 39;
+    const UP = 38;
+    const DOWN = 40;
+    const A = 65;
+    const S = 83;
+    if (key.keyCode == LEFT) {
+      this.#hero.stopLeftMove();
+    }
+
+    if (key.keyCode == RIGHT) {
+      this.#hero.stopRightMove();
+    }
   }
 }
