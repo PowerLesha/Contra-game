@@ -24,7 +24,11 @@ export default class Game {
     this.#platforms.push(platformFactory.createPlatform(200, 300));
     this.#platforms.push(platformFactory.createPlatform(700, 200));
     this.#platforms.push(platformFactory.createPlatform(650, 350));
-
+    this.#platforms.push(platformFactory.createBox(0, 738));
+    this.#platforms.push(platformFactory.createBox(200, 738));
+    const box = platformFactory.createBox(400, 708);
+    box.isStep = true;
+    this.#platforms.push(box);
     this.keyboardProcessor = new KeyboardProcessor(this);
     this.setKeys();
   }
@@ -37,7 +41,7 @@ export default class Game {
     this.#hero.update();
 
     for (let i = 0; i < this.#platforms.length; i++) {
-      if (this.#hero.isJumpState()) {
+      if (this.#hero.isJumpState() && this.#platforms[i].type != "box") {
         continue;
       }
 
@@ -47,7 +51,7 @@ export default class Game {
         prevPoint
       );
       if (collisionResult.vertical == true) {
-        this.#hero.stay();
+        this.#hero.stay(this.#platforms[i].y);
       }
     }
   }
@@ -61,6 +65,12 @@ export default class Game {
 
     if (collisionResult.vertical == true) {
       character.y = prevPoint.y;
+    }
+    if (collisionResult.horizontal == true && platform.type == "box") {
+      if (platform.isStep) {
+        character.stay(platform.y);
+      }
+      character.x = prevPoint.x;
     }
     return collisionResult;
   }
@@ -98,7 +108,9 @@ export default class Game {
     this.keyboardProcessor.getButton("ArrowUp").executeDown = function () {
       this.#hero.startUpMove();
     };
-
+    this.keyboardProcessor.getButton("ArrowDown").executeDown = function () {
+      this.#hero.throwDown();
+    };
     this.keyboardProcessor.getButton("ArrowLeft").executeDown = function () {
       this.#hero.startLeftMove();
     };

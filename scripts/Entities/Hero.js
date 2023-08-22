@@ -7,11 +7,11 @@ const states = {
 };
 
 export default class Hero extends Container {
-  #GRAVITY_FORCE = 0.1;
-  #SPEED = 2;
+  #GRAVITY_FORCE = 0.2;
+  #SPEED = 3;
   #velocityX = 0;
   #velocityY = 0;
-  #JUMP_FORCE = 5.5;
+  #JUMP_FORCE = 9;
 
   #movement = {
     x: 0,
@@ -27,8 +27,8 @@ export default class Hero extends Container {
     super();
 
     const view = new Graphics();
-    view.lineStyle(1, 0xf00000);
-    view.drawRect(0, 0, 20, 60);
+    view.lineStyle(1, 0xfff000);
+    view.drawRect(0, 0, 20, 90);
 
     this.addChild(view);
   }
@@ -45,9 +45,11 @@ export default class Hero extends Container {
     this.y += this.#velocityY;
   }
 
-  stay() {
+  stay(platformY) {
     this.#state = states.stay;
     this.#velocityY = 0;
+
+    this.y = platformY - this.height;
   }
 
   isJumpState() {
@@ -81,7 +83,9 @@ export default class Hero extends Container {
     this.#directionContext.right = 0;
     this.#movement.x = this.#directionContext.left;
   }
-
+  throwDown() {
+    this.#state = states.jump;
+  }
   startUpMove() {
     if (this.#state != states.jump && this.#state != states.FlyDown) {
       this.#state = states.jump;
