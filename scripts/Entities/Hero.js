@@ -3,6 +3,7 @@ import { Container, Graphics } from "../../pixi/pixi.mjs";
 const states = {
   stay: "stay",
   jump: "jump",
+  FlyDown: "flydown",
 };
 
 export default class Hero extends Container {
@@ -35,6 +36,11 @@ export default class Hero extends Container {
   update() {
     this.#velocityX = this.#movement.x * this.#SPEED;
     this.x += this.#velocityX;
+
+    if (this.#velocityY > 0 && this.isJumpState()) {
+      this.#state = states.FlyDown;
+    }
+
     this.#velocityY += this.#GRAVITY_FORCE;
     this.y += this.#velocityY;
   }
@@ -42,6 +48,10 @@ export default class Hero extends Container {
   stay() {
     this.#state = states.stay;
     this.#velocityY = 0;
+  }
+
+  isJumpState() {
+    return this.#state == states.jump;
   }
 
   startLeftMove() {
@@ -73,9 +83,24 @@ export default class Hero extends Container {
   }
 
   startUpMove() {
-    if (this.#state != states.jump) {
+    if (this.#state != states.jump && this.#state != states.FlyDown) {
       this.#state = states.jump;
       this.#velocityY -= this.#JUMP_FORCE;
     }
+  }
+
+  #rect = {
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+  };
+  getRect() {
+    this.#rect.x = this.x;
+    this.#rect.y = this.y;
+    this.#rect.width = this.width;
+    this.#rect.height = this.height;
+
+    return this.#rect;
   }
 }
