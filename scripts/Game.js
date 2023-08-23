@@ -1,5 +1,5 @@
 import KeyboardProcessor from "../KeyboardProcessor.js";
-import Hero from "./Entities/Hero.js";
+import Hero from "./Entities/Hero/Hero.js";
 
 import PlatformFactory from "./Entities/Platforms/PlatformFactory.js";
 
@@ -11,22 +11,22 @@ export default class Game {
   constructor(app) {
     this.#app = app;
 
-    this.#hero = new Hero();
+    this.#hero = new Hero(this.#app.stage);
     this.#hero.x = 100;
     this.#hero.y = 100;
-    this.#app.stage.addChild(this.#hero);
+    // this.#app.stage.addChild(this.#hero);
 
     const platformFactory = new PlatformFactory(this.#app);
 
     this.#platforms.push(platformFactory.createPlatform(100, 400));
-    this.#platforms.push(platformFactory.createPlatform(500, 500));
-    this.#platforms.push(platformFactory.createPlatform(850, 450));
-    this.#platforms.push(platformFactory.createPlatform(200, 300));
-    this.#platforms.push(platformFactory.createPlatform(700, 200));
-    this.#platforms.push(platformFactory.createPlatform(650, 350));
+    this.#platforms.push(platformFactory.createPlatform(450, 400));
+    this.#platforms.push(platformFactory.createPlatform(800, 400));
+    this.#platforms.push(platformFactory.createPlatform(1150, 400));
+    this.#platforms.push(platformFactory.createPlatform(1000, 700));
+    this.#platforms.push(platformFactory.createPlatform(650, 550));
     this.#platforms.push(platformFactory.createBox(0, 738));
     this.#platforms.push(platformFactory.createBox(200, 738));
-    const box = platformFactory.createBox(400, 708);
+    const box = platformFactory.createBox(400, 712);
     box.isStep = true;
     this.#platforms.push(box);
     this.keyboardProcessor = new KeyboardProcessor(this);

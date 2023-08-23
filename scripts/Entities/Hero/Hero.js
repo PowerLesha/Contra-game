@@ -1,4 +1,4 @@
-import { Container, Graphics } from "../../pixi/pixi.mjs";
+import HeroView from "./HeroView.js";
 
 const states = {
   stay: "stay",
@@ -6,7 +6,7 @@ const states = {
   FlyDown: "flydown",
 };
 
-export default class Hero extends Container {
+export default class Hero {
   #GRAVITY_FORCE = 0.2;
   #SPEED = 3;
   #velocityX = 0;
@@ -23,14 +23,30 @@ export default class Hero extends Container {
     right: 0,
   };
   #state = states.stay;
-  constructor() {
-    super();
 
-    const view = new Graphics();
-    view.lineStyle(1, 0xfff000);
-    view.drawRect(0, 0, 20, 90);
+  #bounds = {
+    width: 20,
+    height: 90,
+  };
 
-    this.addChild(view);
+  #view;
+  constructor(stage) {
+    this.#view = new HeroView();
+    stage.addChild(this.#view);
+  }
+
+  get x() {
+    return this.#view.x;
+  }
+  set x(value) {
+    this.#view.x = value;
+  }
+
+  get y() {
+    return this.#view.y;
+  }
+  set y(value) {
+    this.#view.y = value;
   }
 
   update() {
@@ -49,7 +65,7 @@ export default class Hero extends Container {
     this.#state = states.stay;
     this.#velocityY = 0;
 
-    this.y = platformY - this.height;
+    this.y = platformY - this.#bounds.height;
   }
 
   isJumpState() {
@@ -102,8 +118,8 @@ export default class Hero extends Container {
   getRect() {
     this.#rect.x = this.x;
     this.#rect.y = this.y;
-    this.#rect.width = this.width;
-    this.#rect.height = this.height;
+    this.#rect.width = this.#bounds.width;
+    this.#rect.height = this.#bounds.height;
 
     return this.#rect;
   }

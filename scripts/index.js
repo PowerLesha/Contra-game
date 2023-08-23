@@ -1,9 +1,9 @@
 import Game from "./Game.js";
-import * as PIXI from "../pixi/pixi.mjs";
+import * as PIXI from "../lib/pixi.mjs";
 
 let app = new PIXI.Application({
-  width: 1480,
-  height: 768,
+  width: 1900,
+  height: 850,
 });
 
 const game = new Game(app);
