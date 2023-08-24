@@ -58,7 +58,7 @@ export default class Game {
 
   getPlatformCollisoinResult(character, platform, prevPoint) {
     const collisionResult = this.getOrientCollisoinResult(
-      character.getRect(),
+      character.collisionBox,
       platform,
       prevPoint
     );
@@ -108,6 +108,12 @@ export default class Game {
     this.keyboardProcessor.getButton("ArrowUp").executeDown = function () {
       this.#hero.startUpMove();
     };
+
+    this.keyboardProcessor.getButton("ArrowUp").executeUp = function () {
+      setTimeout(() => {
+        this.#hero.stopJump();
+      }, 700);
+    };
     this.keyboardProcessor.getButton("ArrowDown").executeDown = function () {
       this.#hero.throwDown();
     };
@@ -123,6 +129,18 @@ export default class Game {
     };
     this.keyboardProcessor.getButton("ArrowRight").executeUp = function () {
       this.#hero.stopRightMove();
+    };
+    this.keyboardProcessor.getButton("ControlLeft").executeDown = function () {
+      this.#hero.lay();
+    };
+    this.keyboardProcessor.getButton("ControlLeft").executeUp = function () {
+      this.#hero.stopLay();
+    };
+    this.keyboardProcessor.getButton("ShiftLeft").executeDown = function () {
+      this.#hero.run();
+    };
+    this.keyboardProcessor.getButton("ShiftLeft").executeUp = function () {
+      this.#hero.stopRun();
     };
   }
 }

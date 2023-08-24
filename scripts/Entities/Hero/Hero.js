@@ -24,15 +24,15 @@ export default class Hero {
   };
   #state = states.stay;
 
-  #bounds = {
-    width: 20,
-    height: 90,
-  };
-
   #view;
   constructor(stage) {
     this.#view = new HeroView();
     stage.addChild(this.#view);
+    this.#view.showStay();
+  }
+
+  get collisionBox() {
+    return this.#view.collisionBox;
   }
 
   get x() {
@@ -65,7 +65,7 @@ export default class Hero {
     this.#state = states.stay;
     this.#velocityY = 0;
 
-    this.y = platformY - this.#bounds.height;
+    this.y = platformY - this.#view.collisionBox.height;
   }
 
   isJumpState() {
@@ -99,28 +99,36 @@ export default class Hero {
     this.#directionContext.right = 0;
     this.#movement.x = this.#directionContext.left;
   }
+
   throwDown() {
     this.#state = states.jump;
   }
   startUpMove() {
     if (this.#state != states.jump && this.#state != states.FlyDown) {
       this.#state = states.jump;
+
       this.#velocityY -= this.#JUMP_FORCE;
+      this.#view.showJump();
     }
   }
 
-  #rect = {
-    x: 0,
-    y: 0,
-    width: 0,
-    height: 0,
-  };
-  getRect() {
-    this.#rect.x = this.x;
-    this.#rect.y = this.y;
-    this.#rect.width = this.#bounds.width;
-    this.#rect.height = this.#bounds.height;
+  stopJump() {
+    this.#view.showStay();
+  }
 
-    return this.#rect;
+  lay() {
+    this.#view.showLay();
+  }
+
+  stopLay() {
+    this.#view.showStay();
+  }
+
+  run() {
+    this.#view.showRun();
+  }
+
+  stopRun() {
+    this.#view.showStay();
   }
 }

@@ -18,6 +18,12 @@ export default class KeyboardProcessor {
     ArrowDown: {
       isDown: false,
     },
+    ControlLeft: {
+      isDown: false,
+    },
+    ShiftLeft: {
+      isDown: false,
+    },
   };
   #gameContext;
 
